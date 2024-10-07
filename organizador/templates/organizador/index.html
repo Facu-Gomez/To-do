@@ -1,0 +1,99 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+{% include 'organizador/components/head.html' %}
+
+<body>
+    {% include 'organizador/components/navbar.html' %}
+    <h1>Bienvenid@ {% if user.is_authenticated %}{{ user.username }}{% endif %}</h1>
+
+    <div class="container">
+        <div class="task-card">
+            <a href="{% if user.is_authenticated %}{% url 'lista_tareas' %}{% else %}{% url 'register' %}{% endif %}" class="task-link">
+                <h2>Tareas Facultad</h2>
+            </a>
+        </div>
+        <div class="task-card mt-5">
+            <a href="{% if user.is_authenticated %}{% url 'lista_trabajo' %}{% else %}{% url 'register' %}{% endif %}" class="task-link">
+                <h2>Tareas Trabajo</h2>
+            </a>
+        </div>
+        <div class="task-card mt-5">
+            <a href="{% if user.is_authenticated %}{% url 'crear_notas' %}{% else %}{% url 'register' %}{% endif %}" class="task-link">
+                <h2><i class="fa fa-plus-circle fa-1x" aria-hidden="true"> </i> Nota</h2>
+            </a>
+        </div>
+    </div>
+    <div class="container mt-5">
+        <div class="row">
+            {% for nota in notas %}
+                <div class="col-md-4">
+                    <div class="nota-card p-3 mb-4 shadow-sm">
+                        <p>{{ nota.descripcion }}</p>
+                        <div class="task-actions">
+                            <a href="{% url 'editar_notas' nota.id %}"><i class="fa fa-pencil-square fa-2x" aria-hidden="true"></i></a>
+                            <a href="#" class="delete-task" data-url="{% url 'eliminar_notas' nota.id %}">
+                                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p>No tienes notas hechas.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <p>¿Estás seguro de que deseas eliminar esta nota?</p>
+            <div class="modal-buttons">
+                <button id="confirmDeleteBtn">Eliminar</button>
+                <button onclick="closeModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+         var modal = document.getElementById("deleteModal");
+            var confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+        
+
+            function openModal() {
+                modal.style.display = "block";
+            }
+        
+
+            function closeModal() {
+                modal.style.display = "none";
+            }
+        
+
+            function confirmDelete(url) {
+   
+                closeModal();
+
+                window.location.href = url;
+            }
+        
+
+            document.querySelectorAll('.delete-task').forEach(function(button) {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault(); 
+                    openModal(); 
+                    confirmDeleteBtn.onclick = () => confirmDelete(this.getAttribute('data-url'));
+                });
+            });
+        
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    closeModal();
+                }
+            }
+      </script>
+</body>
+</html>

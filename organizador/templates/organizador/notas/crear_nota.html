@@ -1,0 +1,12 @@
+{% include 'organizador/components/head.html' %}
+{% include 'organizador/components/navbar.html' %}
+
+<div class="form-container">
+    <h1>Crear nueva nota</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Crear nota</button>
+    </form>
+    <a href="{% url 'home' %}" class="back-link">Volver al inicio</a>
+</div>

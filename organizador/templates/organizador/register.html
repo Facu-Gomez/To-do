@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+{% include 'organizador/components/head.html' %}
+<body>
+
+    {% include 'organizador/components/navbar.html' %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow-sm register-card">
+                    <div class="card-body">
+                        <h1 class="display-4 text-center mb-4">Registro de Usuario</h1>
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <div class="row">
+                                <!-- Opciones de fotos predeterminadas -->
+                                <div class="col-md-4 text-center">
+                                    <input type="radio" id="icon1" name="default_profile_pic" value="icon1.png">
+                                    <label for="icon1">
+                                        <img src="{% static 'assets/img/icons/icon1.png' %}" alt="Foto Predeterminada 1" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;">
+                                    </label>
+                                </div>
+                                <div class="col-md-4 text-center">
+                                    <input type="radio" id="icon2" name="default_profile_pic" value="icon2.png">
+                                    <label for="icon2">
+                                        <img src="{% static 'assets/img/icons/icon2.png' %}" alt="Foto Predeterminada 2" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;">
+                                    </label>
+                                </div>
+                                <div class="col-md-4 text-center">
+                                    <input type="radio" id="icon3" name="default_profile_pic" value="icon3.png">
+                                    <label for="icon3">
+                                        <img src="{% static 'assets/img/icons/icon3.png' %}" alt="Foto Predeterminada 3" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;">
+                                    </label>
+                                </div>
+                            </div>
+                        
+                            <!-- Campos del formulario -->
+                            <div class="form-group">
+                                {{ form.username.label_tag }}
+                                {{ form.username }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.email.label_tag }}
+                                {{ form.email }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.password1.label_tag }}
+                                {{ form.password1 }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.password2.label_tag }}
+                                {{ form.password2 }}
+                            </div>
+                        
+                            <!-- Botón para enviar el formulario -->
+                            <button type="submit" class="btn btn-primary">Registrar</button>
+                           
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>

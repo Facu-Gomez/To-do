@@ -1,0 +1,12 @@
+{% include 'organizador/components/head.html' %}
+{% include 'organizador/components/navbar.html' %}
+
+<div class="form-container">
+    <h1>Crear nueva tarea</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Crear tarea</button>
+    </form>
+    <a href="{% url 'lista_tareas' %}" class="back-link">Volver a la lista de tareas</a>
+</div>

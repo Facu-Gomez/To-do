@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Tareas</title>
+    {% include 'organizador/components/head.html' %}
+</head>
+<body>
+    {% include 'organizador/components/navbar.html' %}
+    <div class="container task-list">
+        
+        <h1>Tus Tareas</h1>
+            
+        <div class="tasks-container">
+            {% for tarea in tareas %}
+                <div class="task-card">
+                    <h2>{{ tarea.titulo }}</h2>
+                    <span class="task-status">
+                        {% if tarea.estado == 'P' %}
+                            Pendiente
+                        {% else %}
+                            Completada
+                        {% endif %}
+                       
+                    </span>
+                    <div class="task-content">
+                        <p>{{ tarea.descripcion }}</p>
+                        <p class="task-due-date">Fecha de entrega: {{tarea.fecha_entrega }}</p>
+                    </div>
+                
+                    <div class="task-actions">
+                        {% if tarea.estado == 'P' %}
+                            <a href="{% url 'completar_tarea' tarea.id %}"><i class="fa fa-check-square fa-2x" aria-hidden="true" alt="Marcar como completada"></i></a>
+                        {% endif %}
+                        <a href="{% url 'editar_tarea' tarea.id %}"><i class="fa fa-pencil-square fa-2x" aria-hidden="true"></i></a>
+                        <a href="#" class="delete-task" data-url="{% url 'eliminar_tarea' tarea.id %}">
+                            <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            {% empty %}
+                <p>No tienes tareas asignadas.</p>
+            {% endfor %}
+        </div>
+
+        <div id="deleteModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <p>¿Estás seguro de que deseas eliminar esta tarea del trabajo?</p>
+                <div class="modal-buttons">
+                    <button id="confirmDeleteBtn">Eliminar</button>
+                    <button onclick="closeModal()">Cancelar</button>
+                </div>
+            </div>
+        </div>
+        
+        <a href="{% url 'crear_tarea' %}" class="add-task"><i class="fa fa-plus-circle fa-1x" aria-hidden="true"> </i> Agregar tarea</a>
+
+        <script>
+            
+            var modal = document.getElementById("deleteModal");
+            var confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+        
+
+            function openModal() {
+                modal.style.display = "block";
+            }
+        
+
+            function closeModal() {
+                modal.style.display = "none";
+            }
+        
+
+            function confirmDelete(url) {
+   
+                closeModal();
+
+                window.location.href = url;
+            }
+        
+
+            document.querySelectorAll('.delete-task').forEach(function(button) {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault(); 
+                    openModal(); 
+                    confirmDeleteBtn.onclick = () => confirmDelete(this.getAttribute('data-url'));
+                });
+            });
+        
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    closeModal();
+                }
+            }
+        </script>
+</body>
+</html>
+ 
